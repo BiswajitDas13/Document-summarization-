@@ -1,4 +1,4 @@
-Project Summary
+Project Summary:
 Google Drive Document Summarization System
 Built with Flask, LangChain (v1 LCEL), and OpenAI GPT-4o-mini
 
