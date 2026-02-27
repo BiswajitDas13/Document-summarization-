@@ -1,45 +1,34 @@
 Project Summary
 
-The Google Drive Document Summarizer is a production-oriented Generative AI web application built using Flask, LangChain v1 (LCEL), and OpenAI’s GPT-4o-mini model. The system automates document ingestion, large-text processing, and structured summarization directly from a specified Google Drive folder.
+The Google Drive Document Summarizer is a full-stack Generative AI system engineered to automate large-scale document ingestion and structured summarization using OpenAI’s GPT-4o-mini model. The application integrates Google Drive APIs, OAuth 2.0 authentication, and LangChain v1’s LCEL framework to build a scalable, modular, and token-aware summarization pipeline.
 
-The application integrates Google OAuth 2.0 for secure authentication and uses the Google Drive REST API to retrieve files programmatically. It supports PDF, DOCX, and TXT formats. Text extraction is handled using pdfplumber for PDFs and python-docx for Word documents, enabling compatibility with standard enterprise document formats.
+The system securely authenticates users via Google OAuth 2.0 and programmatically retrieves documents from a specified Google Drive folder using the Drive REST API. It supports multi-format document processing (PDF, DOCX, TXT), with format-specific parsing handled through pdfplumber and python-docx. This ensures robust extraction of textual content from heterogeneous document types commonly used in enterprise workflows.
 
-To efficiently process long documents within token constraints, the system implements a hierarchical Map-Reduce summarization pipeline using LangChain’s modern LCEL architecture. Documents are segmented using RecursiveCharacterTextSplitter from the langchain-text-splitters package. This chunking strategy ensures controlled context windows with configurable overlap, preserving semantic continuity.
+Given the token limitations inherent in large language models, the system implements a hierarchical Map-Reduce summarization strategy using LangChain’s modern LCEL (LangChain Expression Language) architecture. The workflow consists of:
 
-The summarization workflow operates in two phases:
+Preprocessing & Segmentation
+Documents are segmented using RecursiveCharacterTextSplitter with controlled chunk size and overlap. This ensures contextual continuity while maintaining token efficiency.
 
-Map Phase: Each chunk is independently summarized using GPT-4o-mini.
+Map Phase (Chunk-Level Summarization)
+Each chunk is independently summarized using GPT-4o-mini, enabling parallelizable processing and improved scalability.
 
-Reduce Phase: Partial summaries are aggregated into a single coherent structured summary.
+Reduce Phase (Summary Aggregation)
+Intermediate summaries are recursively combined into a final structured, coherent summary, preserving key insights while minimizing redundancy.
 
-Using GPT-4o-mini provides a strong balance between performance, cost-efficiency, and summarization quality, making it suitable for scalable document analysis tasks.
+GPT-4o-mini was selected to optimize performance-to-cost ratio while maintaining strong summarization quality, making the system viable for high-volume document processing scenarios.
 
-The backend is implemented in Flask with a modular design:
+The application architecture follows a clean separation-of-concerns model:
 
-drive_service.py handles OAuth authentication and Drive API interactions.
+drive_service.py manages authentication, token persistence, and API interactions.
 
-parser.py manages multi-format document extraction.
+parser.py handles document format detection and text extraction.
 
-summarizer.py implements the LCEL-based Map-Reduce summarization chain.
+summarizer.py encapsulates the LCEL-based LLM workflow.
 
-app.py manages routing, request handling, and response rendering.
+app.py orchestrates request handling, response rendering, and data flow.
 
-The frontend uses Bootstrap-based templating to display summaries in a structured tabular format. Additionally, the application supports CSV export functionality using Pandas, enabling reporting, auditing, or downstream data integration.
+The backend is implemented in Flask, offering a lightweight yet extensible framework suitable for production deployment with WSGI servers (e.g., Gunicorn). The frontend leverages Bootstrap-based templating for structured data visualization and integrates CSV export functionality via Pandas for downstream analytics.
 
-Key architectural characteristics include:
+Security and configuration best practices are applied through environment variable management (.env), secure credential storage, and OAuth token reuse (token.json). The architecture is extensible and can be adapted for asynchronous processing, database-backed caching, containerized deployment, or integration with enterprise data pipelines.
 
-Secure API key management via environment variables
-
-Persistent OAuth token storage (token.json)
-
-Separation of concerns between ingestion, processing, and presentation layers
-
-Token-aware chunking for large document handling
-
-Scalable summarization strategy using GPT-4o-mini
-
-Extensible architecture for future integration with databases or cloud deployment
-
-This project demonstrates real-world GenAI engineering practices, including LLM integration, prompt design, hierarchical summarization, secure API usage, and full-stack Python web development. It is suitable for use cases such as enterprise report summarization, academic research condensation, legal document review, and automated knowledge extraction pipelines.
-
-Overall, the system serves as a comprehensive example of applied Generative AI combining cloud APIs, modern LLM workflows, and web application architecture.
+This project demonstrates applied GenAI engineering principles, including LLM workflow orchestration, token-aware document processing, cloud API integration, and modular web application design. It serves as a scalable foundation for enterprise use cases such as automated report generation, research summarization, compliance document analysis, and intelligent knowledge extraction systems.
