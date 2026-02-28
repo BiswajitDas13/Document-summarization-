@@ -1,214 +1,144 @@
-📄 Google Drive Document Summarization System
+# 📄 Google Drive Document Summarization System
 
-Built with Flask • LangChain v1 (LCEL) • OpenAI GPT-4o-mini
+**Built with Flask • LangChain v1 (LCEL) • OpenAI GPT-4o-mini**
 
-🚀 Overview
+---
 
-The Google Drive Document Summarization System is a Generative AI–powered web application that automatically summarizes documents stored in a Google Drive folder.
+## 🚀 Overview
 
-The system:
+The Google Drive Document Summarization System is a Generative AI–powered web application designed to automatically summarize documents stored in a Google Drive folder.
 
-Securely connects to Google Drive
+The system securely connects to Google Drive, retrieves supported documents (PDF, DOCX, TXT), extracts textual content, and generates structured summaries using OpenAI GPT-4o-mini through LangChain’s LCEL (LangChain Expression Language) framework.
 
-Retrieves supported documents (PDF, DOCX, TXT)
+This project demonstrates real-world integration of Large Language Models (LLMs) with cloud APIs and scalable web application development.
 
-Extracts text content
+---
 
-Generates structured summaries using GPT-4o-mini
+## 🏗️ System Architecture
 
-Implements LangChain’s modern LCEL (LangChain Expression Language) framework
+The application follows a modular and scalable architecture with clear separation of responsibilities.
 
-This project demonstrates real-world integration of LLMs + Cloud APIs + Web Development in a scalable architecture.
+### 1. Google OAuth 2.0 Authentication
+- Ensures secure access to user Google Drive data
+- OAuth tokens stored locally after first authorization
 
-🏗️ System Architecture
+### 2. Google Drive API Integration
+- Retrieves files from a specified folder
+- Supports multi-document processing
 
-The application follows a modular and scalable architecture with clear separation of responsibilities:
+### 3. Document Parsing Layer
+- **PDF** → pdfplumber
+- **DOCX** → python-docx
+- **TXT** → Native decoding
 
-🔐 1. Google OAuth 2.0 Authentication
+### 4. Summarization Engine (LangChain v1 LCEL)
+- Hierarchical Map-Reduce summarization
+- Token-aware chunking strategy
+- Powered by GPT-4o-mini
 
-Secure access to user Google Drive
+### 5. Flask Backend
+- Routing
+- Business logic
+- Document processing
+- UI rendering
 
-Token stored locally (token.json)
+### 6. Bootstrap Frontend
+- Structured summary display
+- Clean UI
+- CSV export functionality
 
-Credentials managed securely
+---
 
-☁️ 2. Google Drive API Integration
+## 🔄 How the Summarization Works
 
-Fetches documents from a specified folder
+Large documents often exceed LLM token limits.  
+To solve this, the system uses a two-step Map-Reduce strategy.
 
-Supports multi-file processing
+### Step 1: Text Chunking
+- Uses RecursiveCharacterTextSplitter
+- Splits large documents into manageable chunks
+- Ensures efficient token usage and context preservation
 
-📂 3. Document Parsing Layer
+### Step 2: Map Phase
+- Each chunk is summarized independently using GPT-4o-mini
+- Enables controlled processing of large inputs
 
-Handles different document formats:
+### Step 3: Reduce Phase
+- Partial summaries are merged
+- Generates a final structured summary
 
-PDF → pdfplumber
+This ensures scalability, accuracy, and effective long-document handling.
 
-DOCX → python-docx
+---
 
-TXT → Native decoding
+## 🤖 Why GPT-4o-mini?
 
-🧠 4. Summarization Engine (LangChain v1 LCEL)
+- Strong summarization performance
+- Cost-efficient compared to larger models
+- Performs well for structured text analysis
+- Supports scalable multi-document processing
 
-Token-aware processing
+Ideal for academic, enterprise, and automated knowledge extraction use cases.
 
-Hierarchical Map-Reduce summarization
+---
 
-Uses OpenAI GPT-4o-mini
+## 🔐 Security & Configuration
 
-🌐 5. Flask Backend
+- API keys stored using environment variables (.env)
+- OAuth tokens stored in token.json
+- No hardcoded credentials in source code
+- Secure Google OAuth flow
 
-Routing
+---
 
-Processing logic
+## ✨ Key Features
 
-API integration
+- Secure Google Drive integration
+- Multi-format support (PDF, DOCX, TXT)
+- Token-aware chunk-based processing
+- Hierarchical Map-Reduce summarization
+- Clean and responsive UI
+- CSV export functionality
+- Modular and extensible architecture
 
-Template rendering
+---
 
-🎨 6. Bootstrap Frontend
+## 🛠️ Technology Stack
 
-Clean summary display
+| Layer | Technology |
+|-------|------------|
+| Backend | Flask |
+| LLM Framework | LangChain v1 (LCEL) |
+| Model | OpenAI GPT-4o-mini |
+| Authentication | Google OAuth 2.0 |
+| Cloud Storage | Google Drive API |
+| Document Parsing | pdfplumber, python-docx |
+| Frontend | Bootstrap |
+| Environment | Python, dotenv |
 
-Structured table format
+---
 
-CSV export functionality
+## 📈 Scalability & Extensibility
 
-🔄 How the Summarization Works
+The system separates:
+- Authentication
+- Document parsing
+- Summarization logic
+- Frontend rendering
 
-Large documents often exceed LLM token limits.
-To handle this, the system implements a Map-Reduce strategy:
+This makes it easy to extend with:
+- Database integration
+- Asynchronous processing
+- Cloud deployment
+- Multi-user support
+- Role-based authentication
 
-✂️ Step 1: Text Chunking
+---
 
-Uses RecursiveCharacterTextSplitter
+## 📌 Conclusion
 
-Splits large documents into manageable chunks
+The Google Drive Document Summarizer demonstrates a practical, end-to-end implementation of Generative AI integrated with cloud storage and web application development.
 
-Ensures:
+By combining Google OAuth 2.0, Google Drive API, LangChain v1 LCEL, GPT-4o-mini, and Flask, the system delivers secure document retrieval, efficient large-text handling, structured summarization, and scalable architecture.
 
-Efficient token usage
-
-Context preservation
-
-Scalability for long documents
-
-🗺️ Step 2: Map Phase
-
-Each chunk is summarized independently
-
-GPT-4o-mini processes chunks in parallel-style logic
-
-🔁 Step 3: Reduce Phase
-
-All partial summaries are merged
-
-A final structured summary is generated
-
-✅ This ensures:
-
-Accuracy
-
-Scalability
-
-Efficient handling of long documents
-
-🤖 Why GPT-4o-mini?
-
-GPT-4o-mini was selected because:
-
-✅ Strong summarization performance
-
-✅ Cost-efficient compared to larger models
-
-✅ Good structured text understanding
-
-✅ Scalable for multi-document processing
-
-Ideal for:
-
-Academic research summarization
-
-Enterprise report analysis
-
-Automated knowledge extraction
-
-🔐 Security & Configuration
-
-Security best practices implemented:
-
-API keys stored using environment variables (.env)
-
-OAuth tokens stored securely in token.json
-
-No hardcoded credentials in source code
-
-Secure Google OAuth flow
-
-✨ Key Features
-
-🔐 Secure Google Drive integration
-
-📄 Multi-format support (PDF, DOCX, TXT)
-
-🧠 Token-aware chunk-based processing
-
-🔄 Hierarchical Map-Reduce summarization
-
-🌐 Clean and responsive UI
-
-📊 CSV export functionality
-
-🧩 Modular and extensible architecture
-
-🛠️ Tech Stack
-Layer	Technology
-Backend	Flask
-LLM Framework	LangChain v1 (LCEL)
-Model	OpenAI GPT-4o-mini
-Authentication	Google OAuth 2.0
-Storage	Google Drive API
-Parsing	pdfplumber, python-docx
-Frontend	Bootstrap
-Environment	Python, dotenv
-📈 Scalability & Extensibility
-
-The architecture separates:
-
-Authentication
-
-Document parsing
-
-Summarization logic
-
-Frontend rendering
-
-This makes the system easy to extend for:
-
-Database integration
-
-Asynchronous/background processing
-
-Batch document pipelines
-
-Cloud deployment (Azure / GCP / AWS)
-
-Multi-user access
-
-Role-based authentication
-
-🎯 Real-World Applications
-
-Research paper summarization
-
-Enterprise document analysis
-
-Legal/financial report condensation
-
-Automated knowledge extraction
-
-Internal document intelligence systems
-
-📌 Conclusion
-
-The Google Drive Document Summarizer demonstrates a practical, end-to-end implementation of Generative AI integrated with cloud-based storage and web application development.
+This project highlights how modern LLM systems can be integrated into real-world applications using modular design, secure configuration, and token-aware processing strategies.
